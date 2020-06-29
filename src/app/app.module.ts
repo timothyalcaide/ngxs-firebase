@@ -6,12 +6,11 @@ import { NgxsLoggerPluginModule } from '@ngxs/logger-plugin';
 import { NgxsModule } from '@ngxs/store';
 import { environment } from 'src/environments/environment';
 import { AppRoutingModule } from './app-routing.module';
-import { AppComponent } from './app.component';
+import { AppComponent } from './core/containers/app/app.component';
 import { CoreModule } from './core/core.module';
 import { AppStates } from './core/store';
 
 @NgModule({
-  declarations: [AppComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,
@@ -27,7 +26,6 @@ import { AppStates } from './core/store';
     }),
     CoreModule.forRoot(),
   ],
-  providers: [],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

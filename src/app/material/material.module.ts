@@ -11,7 +11,7 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatToolbarModule } from '@angular/material/toolbar';
 
-const modules = [
+const MODULES = [
   MatToolbarModule,
   MatIconModule,
   LayoutModule,
@@ -27,7 +27,7 @@ const modules = [
 ];
 
 @NgModule({
-  imports: [...modules],
-  exports: [...modules],
+  imports: MODULES,
+  exports: MODULES,
 })
 export class MaterialModule {}
