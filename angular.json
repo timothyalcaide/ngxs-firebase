@@ -123,6 +123,15 @@
           }
         }
       }
-    }},
-  "defaultProject": "angular-firebase-ngxs-e-commerce"
+    }
+  },
+  "defaultProject": "angular-firebase-ngxs-e-commerce",
+  "schematics": {
+    "@schematics/angular": {
+      "component": {
+        "inlineStyle": true,
+        "inlineTemplate": true
+      }
+    }
+  }
 }
