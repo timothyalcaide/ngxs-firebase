@@ -1,27 +1,35 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
+import { Select, Store } from '@ngxs/store';
+import { User } from 'firebase';
 import { Observable } from 'rxjs';
-import { User } from '../models/user.model';
-import { AuthService } from '../services/auth.service';
+import { LoginWithGoogle, Logout } from '../store';
+import { AuthStatusState } from './../store/states/auth-status.state';
+import { LoginPageState } from './../store/states/login-page.state';
 
 @Component({
   selector: 'app-login-page',
   template: `
-    <div *ngIf="!(auth.user$ | async)">
+    <div *ngIf="!(user$ | async)">
       <h1>Login</h1>
-      <button mat-raised-button (click)="onLoginWithGoogle()">
+      <button
+        mat-raised-button
+        (click)="onLoginWithGoogle()"
+        *ngIf="!(pending$ | async); else spinner"
+      >
         <img src="/assets/google-logo.svg" /> Login with Google
       </button>
-      <h5>OR</h5>
-      <app-email-login></app-email-login>
+      <ng-template #spinner>
+        <mat-spinner class="center"></mat-spinner>
+      </ng-template>
     </div>
-
-    <div *ngIf="auth.user$ | async as user" class="logout">
+    <div *ngIf="user$ | async as user" class="logout">
       <h3>Howdy, {{ user.displayName }}</h3>
       <img [src]="user.photoURL" />
       <p>UID: {{ user.uid }}</p>
       <p>Email: {{ user.email }}</p>
       <button (click)="onSignOut()">Logout</button>
     </div>
+    <p *ngIf="error$ | async as error">{{ error }}</p>
   `,
   styles: [
     `
@@ -42,23 +50,27 @@ import { AuthService } from '../services/auth.service';
       .logout {
         padding-top: 5em;
       }
+
+      .center {
+        margin: 0 auto;
+        margin-top: 20px;
+      }
     `,
   ],
 })
-export class LoginPageComponent implements OnInit {
-  user$: Observable<User>;
+export class LoginPageComponent {
+  @Select(LoginPageState.getPending) pending$: Observable<boolean>;
+  @Select(LoginPageState.getError) error$: Observable<string>;
+  @Select(AuthStatusState.getLoggedIn) IsLoggedIn$: Observable<boolean>;
+  @Select(AuthStatusState.getUser) user$: Observable<User>;
 
-  constructor(public auth: AuthService) {}
-
-  ngOnInit() {
-    this.user$ = this.auth.user$;
-  }
+  constructor(private store: Store) {}
 
   onLoginWithGoogle() {
-    this.auth.googleSignin();
+    this.store.dispatch(new LoginWithGoogle());
   }
 
   onSignOut() {
-    this.auth.signOut();
+    this.store.dispatch(new Logout());
   }
 }

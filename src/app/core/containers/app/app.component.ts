@@ -1,10 +1,12 @@
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { Component, OnInit } from '@angular/core';
 import { Select, Store } from '@ngxs/store';
-import { Observable, of } from 'rxjs';
+import { Observable } from 'rxjs';
 import { map, shareReplay } from 'rxjs/operators';
+import { User } from 'src/app/auth/models/user.model';
+import { Logout } from 'src/app/auth/store';
+import { NavItem, USER_NAV } from '../../nav-items';
 import { CloseSidenav, LayoutState, OpenSidenav } from '../../store';
-import { FIRST, NavItem, SECOND } from '../../nav-items';
 
 @Component({
   selector: 'app-root',
@@ -13,10 +15,10 @@ import { FIRST, NavItem, SECOND } from '../../nav-items';
 })
 export class AppComponent implements OnInit {
   @Select(LayoutState.getShowSidenav) showSidenav$: Observable<boolean>;
-  // TODO
-  loggedIn$: Observable<boolean> = of(false);
-  firstNavList: NavItem[];
-  secondNavList: NavItem[];
+  @Select((state) => state.auth.status.loggedIn) loggedIn$: Observable<boolean>;
+  @Select((state) => state.auth.status.user) user$: Observable<User>;
+
+  USER_NAV: NavItem[];
   isHandset$: Observable<boolean>;
 
   constructor(
@@ -25,8 +27,7 @@ export class AppComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.firstNavList = FIRST;
-    this.secondNavList = SECOND;
+    this.USER_NAV = USER_NAV;
     this.isHandset$ = this.breakpointObserver
       .observe([Breakpoints.Handset])
       .pipe(
@@ -44,6 +45,7 @@ export class AppComponent implements OnInit {
   }
 
   logout() {
-    // TODO
+    this.closeSidenav();
+    this.store.dispatch(new Logout());
   }
 }

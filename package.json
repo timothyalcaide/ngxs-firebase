@@ -24,6 +24,8 @@
     "@angular/router": "~9.1.7",
     "@ngxs/devtools-plugin": "^3.6.2",
     "@ngxs/logger-plugin": "^3.6.2",
+    "@ngxs/router-plugin": "^3.6.2",
+    "@ngxs/storage-plugin": "^3.6.2",
     "@ngxs/store": "^3.6.2",
     "firebase": "^7.15.5",
     "rxjs": "~6.5.4",

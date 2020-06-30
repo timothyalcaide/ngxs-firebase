@@ -11,9 +11,7 @@ export const FIRST: NavItem[] = [
   { title: 'test', icon: '🐱', link: '/test' },
 ];
 
-export const SECOND: NavItem[] = [
-  { title: 'test', icon: '🐱', link: '/test' },
-  { title: 'test', icon: '🐱', link: '/test' },
-  { title: 'test', icon: '🐱', link: '/test' },
-  { title: 'test', icon: '🐱', link: '/test' },
+export const USER_NAV: NavItem[] = [
+  { title: 'Settings', icon: '🐱', link: '/' },
+  { title: 'Logout', icon: '🐱', link: '/logout' },
 ];

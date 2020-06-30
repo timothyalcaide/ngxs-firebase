@@ -4,7 +4,6 @@ import {
   AngularFirestore,
   AngularFirestoreDocument,
 } from '@angular/fire/firestore';
-import { Router } from '@angular/router';
 import * as firebase from 'firebase/app';
 import { Observable, of } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
@@ -16,21 +15,9 @@ import { User } from '../models/user.model';
 export class AuthService {
   user$: Observable<User>;
 
-  constructor(
-    private afAuth: AngularFireAuth,
-    private afs: AngularFirestore,
-    private router: Router
-  ) {
+  constructor(private afAuth: AngularFireAuth, private afs: AngularFirestore) {
     // Get the auth state, then fetch the Firestore user document or return null
-    this.user$ = this.afAuth.authState.pipe(
-      switchMap((user: User) => {
-        if (user) {
-          return this.afs.doc<User>(`users/${user.uid}`).valueChanges();
-        } else {
-          return of(null);
-        }
-      })
-    );
+    this.user$ = this.getAuthState();
   }
 
   async googleSignin() {
@@ -41,10 +28,9 @@ export class AuthService {
 
   async signOut() {
     await this.afAuth.signOut();
-    this.router.navigate(['/']);
   }
 
-  private updateUserData(user) {
+  private updateUserData(user: User): User {
     // Sets user data to firestore on login
     const userRef: AngularFirestoreDocument<User> = this.afs.doc(
       `users/${user.uid}`
@@ -54,7 +40,22 @@ export class AuthService {
       email: user.email,
       displayName: user.displayName,
       photoURL: user.photoURL,
+      phoneNumber: user.phoneNumber,
+      providerId: user.providerId,
     };
-    return userRef.set(data as User, { merge: true });
+    userRef.set(data as User, { merge: true });
+    return data;
+  }
+
+  private getAuthState() {
+    return this.afAuth.authState.pipe(
+      switchMap((user: User) => {
+        if (user) {
+          return this.afs.doc<User>(`users/${user.uid}`).valueChanges();
+        } else {
+          return of(null);
+        }
+      })
+    );
   }
 }
