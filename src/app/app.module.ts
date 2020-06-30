@@ -10,6 +10,7 @@ import { NgxsStoragePluginModule } from '@ngxs/storage-plugin';
 import { NgxsModule } from '@ngxs/store';
 import { environment } from 'src/environments/environment';
 import { AppRoutingModule } from './app-routing.module';
+import { AuthModule } from './auth/auth.module';
 import { AppComponent } from './core/containers/app/app.component';
 import { CoreModule } from './core/core.module';
 import { AppStates } from './core/store';
@@ -19,6 +20,7 @@ import { AppStates } from './core/store';
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
+    AuthModule.forRoot(),
     AngularFireModule.initializeApp(environment.firebase),
     AngularFirestoreModule,
     NgxsModule.forRoot(AppStates, {
