@@ -10,20 +10,18 @@
       <app-nav-item
         (navigate)="closeSidenav()"
         *ngIf="loggedIn$ | async"
-        routerLink="/"
-        icon="book"
-        hint="View your book collection"
+        routerLink="/product"
+        icon="view_list"
       >
-        My Collection
+        Product list
       </app-nav-item>
       <app-nav-item
         (navigate)="closeSidenav()"
         *ngIf="loggedIn$ | async"
-        routerLink="/books/find"
-        icon="search"
-        hint="Find your next book!"
+        routerLink="/cart"
+        icon="shopping_cart"
       >
-        Browse Books
+        Cart
       </app-nav-item>
       <app-nav-item
         (navigate)="closeSidenav()"
@@ -55,7 +53,7 @@
           />
         </button>
         <mat-menu #menu="matMenu">
-          <a mat-menu-item [routerLink]="">
+          <a mat-menu-item (click)="settings()">
             <i>⚙️</i>
             <span>Settings</span>
           </a>

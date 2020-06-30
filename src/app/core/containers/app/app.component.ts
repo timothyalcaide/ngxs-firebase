@@ -1,5 +1,6 @@
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { Component, OnInit } from '@angular/core';
+import { Navigate } from '@ngxs/router-plugin';
 import { Select, Store } from '@ngxs/store';
 import { Observable } from 'rxjs';
 import { map, shareReplay } from 'rxjs/operators';
@@ -47,5 +48,9 @@ export class AppComponent implements OnInit {
   logout() {
     this.closeSidenav();
     this.store.dispatch(new Logout());
+  }
+
+  settings() {
+    this.store.dispatch(new Navigate(['/settings']));
   }
 }

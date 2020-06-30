@@ -22,13 +22,6 @@ import { LoginPageState } from './../store/states/login-page.state';
         <mat-spinner class="center"></mat-spinner>
       </ng-template>
     </div>
-    <div *ngIf="user$ | async as user" class="logout">
-      <h3>Howdy, {{ user.displayName }}</h3>
-      <img [src]="user.photoURL" />
-      <p>UID: {{ user.uid }}</p>
-      <p>Email: {{ user.email }}</p>
-      <button (click)="onSignOut()">Logout</button>
-    </div>
     <p *ngIf="error$ | async as error">{{ error }}</p>
   `,
   styles: [
@@ -45,10 +38,6 @@ import { LoginPageState } from './../store/states/login-page.state';
 
       :host {
         text-align: center;
-      }
-
-      .logout {
-        padding-top: 5em;
       }
 
       .center {
